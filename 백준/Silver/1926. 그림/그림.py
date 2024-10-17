@@ -1,37 +1,38 @@
-n, m = map(int, input().split()) 
+import sys
+input=sys.stdin.readline
 
-graph = [list(map(int, input().split())) for _ in range(n)]
+n,m=map(int,input().split())
+map=[list(map(int,input().split())) for _ in range(n)]
+chk=[[False]*m for _ in range(n)]
 
-def iterative_dfs(x, y):
-    stack = [(x, y)]
-    area = 0
-    
-    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    
-    while stack:
-        x, y = stack.pop()
-        
-        if x < 0 or x >= n or y < 0 or y >= m:
-            continue
+dy=[0,1,0,-1]
+dx=[1,0,-1,0]
 
-        if graph[x][y] == 1:
-            graph[x][y] = 0  
-            area += 1  
+def bfs(y,x):
+    rs=1
+    q=[(y,x)]
+    while q:
+        ey,ex=q.pop()
+        for k in range(4):
+            ny=ey+dy[k]
+            nx=ex+dx[k]
+            if 0<=ny<n and 0<=nx<m:
+                if map[ny][nx]==1 and chk[ny][nx]==False:
+                    rs+=1
+                    chk[ny][nx]=True
+                    q.append((ny,nx))
+                    
+    return rs
 
-            for dx, dy in directions:
-                nx, ny = x + dx, y + dy
-                stack.append((nx, ny))
-    
-    return area
+cnt=0
+maxv=0
 
-count = 0
-max_paint = 0
+for j in range(n):
+    for i in range(m):
+        if map[j][i]==1 and chk[j][i]==False:
+            chk[j][i]=True
+            cnt+=1
+            maxv=max(maxv,bfs(j,i))
 
-for i in range(n):
-    for j in range(m):
-        if graph[i][j] == 1:  
-            count += 1  
-            max_paint = max(max_paint, iterative_dfs(i, j))  # 넓이 계산
-
-print(count)
-print(max_paint)
+print(cnt)
+print(maxv)     
