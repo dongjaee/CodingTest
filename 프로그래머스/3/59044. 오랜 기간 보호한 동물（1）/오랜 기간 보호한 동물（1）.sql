@@ -1,6 +1,6 @@
-select a.NAME,a.DATETIME
+select a.name, a.datetime
 from ANIMAL_INS as a
-left join ANIMAL_OUTS as b on a.ANIMAL_ID=b.ANIMAL_ID
-where b.NAME is null and a.NAME is not null
-order by a.DATETIME asc
-limit 3;
+left join animal_outs as b on a.animal_id=b.animal_id
+where b.name is null and a.name is not null
+order by a.datetime 
+limit 3
